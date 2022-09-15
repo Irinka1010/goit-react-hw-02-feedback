@@ -1,14 +1,14 @@
 import { Component } from 'react';
-import { Block } from './Block';
+import Section from 'components/Feedback/Section';
 import Statistics from 'components/Feedback/Statistics';
-import ButtonFeedback from 'components/Feedback/ButtonFeedback';
+import FeedbackOptions from 'components/Feedback/FeedbackOptions';
 export default class Feedback extends Component {
   state = {
     good: 0,
     neutral: 0,
     bad: 0,
   };
-  leaveVote = propertyReviews => {
+  onLeaveFeedback = propertyReviews => {
     this.setState(prevState => {
       const value = prevState[propertyReviews];
       return {
@@ -27,7 +27,7 @@ export default class Feedback extends Component {
     }
     const value = this.state[propertyReviews];
     const result = (value / total) * 100;
-    return Number(result.toFixed(2));
+    return Number(result.toFixed(0));
   }
   render() {
     const { good, neutral, bad } = this.state;
@@ -35,18 +35,22 @@ export default class Feedback extends Component {
     const positiveFeedback = this.countPositiveFeedbackPercentage('good');
     return (
       <div>
-        <Block title="Please leave feedback">
-          <ButtonFeedback leaveVote={this.leaveVote} />
-        </Block>
-        <Block title="Statistics">
-          <Statistics
-            good={good}
-            neutral={neutral}
-            bad={bad}
-            total={total}
-            positiveFeedback={positiveFeedback}
-          />
-        </Block>
+        <Section title="Please leave feedback">
+          <FeedbackOptions onLeaveFeedback={this.onLeaveFeedback} />
+        </Section>
+        <Section title="Statistics">
+          {!total ? (
+            <p>There is no feedback</p>
+          ) : (
+            <Statistics
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              total={total}
+              positiveFeedback={positiveFeedback}
+            />
+          )}
+        </Section>
       </div>
     );
   }
