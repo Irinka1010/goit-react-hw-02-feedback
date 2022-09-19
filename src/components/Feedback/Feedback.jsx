@@ -2,6 +2,7 @@ import { Component } from 'react';
 import Section from 'components/Feedback/Section';
 import Statistics from 'components/Feedback/Statistics';
 import FeedbackOptions from 'components/Feedback/FeedbackOptions';
+import css from './FeedbackStyled.module.css';
 export default class Feedback extends Component {
   state = {
     good: 0,
@@ -34,13 +35,13 @@ export default class Feedback extends Component {
     const total = this.countTotalFeedback();
     const positiveFeedback = this.countPositiveFeedbackPercentage('good');
     return (
-      <div>
+      <>
         <Section title="Please leave feedback">
           <FeedbackOptions onLeaveFeedback={this.onLeaveFeedback} />
         </Section>
         <Section title="Statistics">
           {!total ? (
-            <p>There is no feedback</p>
+            <p className={css.notification}>There is no feedback</p>
           ) : (
             <Statistics
               good={good}
@@ -51,7 +52,7 @@ export default class Feedback extends Component {
             />
           )}
         </Section>
-      </div>
+      </>
     );
   }
 }
